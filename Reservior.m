@@ -13,19 +13,21 @@ J=MaskInput(I,M);
 %Reservoir--------------------------------------------------------
 % t=linspace(0,Tau,100);%test command
 % y=[];%test command
-x_of_virtualnodes=[];
-xh0=19.001;
+x_of_virtualnodes=zeros(1,Num_of_VirtualNodes*length(J));
+xh0=1;
 for i=1:length(J)
     if i==1
         sol=dde_solve('TDE_with_input',Tau,xh0,[0,Tau],gamma,J{i});
-        x_of_virtualnodes=virtualnodes(sol,Num_of_VirtualNodes,Tau,Theta,Theta/100);
+        x_of_virtualnodes(1:Num_of_VirtualNodes)=virtualnodes(sol,Num_of_VirtualNodes,Tau,Theta,Theta/100);
 %         y=[y deval(sol,t)];%test command
     else
         sol=dde_solve('TDE_with_input',Tau,'Xh_Func',[0,Tau],gamma,J{i});
-        x_of_virtualnodes=[x_of_virtualnodes virtualnodes(sol,Num_of_VirtualNodes,Tau,Theta,Theta/100)];
+        x_of_virtualnodes(1+Num_of_VirtualNodes*(i-1):Num_of_VirtualNodes*i)=virtualnodes(sol,Num_of_VirtualNodes,Tau,Theta,Theta/100);
 %         y=[y deval(sol,t)];%test command
-    end    
-    disp(i) %test command
+    end
+    if mod(i,100)==0
+        disp(i) %test command
+    end
 end
 %test output-------------------------------------------------------------
 % plot(y_output);

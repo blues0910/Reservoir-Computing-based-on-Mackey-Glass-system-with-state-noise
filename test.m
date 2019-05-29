@@ -1,15 +1,16 @@
 clear
-Tau=0.79;
+Tau=10;
 Xh=19.001;
 TS=0;
-TE=200;
+TE=50;
 options = ddeset('RelTol',1e-7,'AbsTol',1e-11);
 sol = dde23('Time_Delay_Equation',Tau,Xh,[TS,TE],options);
 t = linspace(TS,TE,TE*100);
+
 y = deval(sol,t);
 plot(t,y);
 
-% ylag = deval(sol,t - 1);
+% ylag = deval(sol,t - Tau);
 % plot(y,ylag);
 % title('Figure 2. Example 5 of Wille''and Baker.')
 % xlabel('y(t)');

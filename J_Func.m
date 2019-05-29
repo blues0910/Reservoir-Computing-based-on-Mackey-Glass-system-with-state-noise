@@ -1,12 +1,17 @@
 function y= J_Func(t)
 %J_FUNC 此处显示有关此函数的摘要
-%   此处显示详细说明
-global JF Tau Num_of_VitualNodes
-tmpt_J=linspace(0,Tau,Num_of_VitualNodes);
+%   此处显示详细说明\
+%------------------------------------------------------------------
+global JF tmpt_J
 tmp1=max(tmpt_J-t,0);
 k1=find(tmp1==0,1,'last');
 y=JF(k1);
-
+%------------------------------------------------------------------
+% global JF Tau Num_of_VirtualNodes
+% tmpt_J=linspace(0,Tau,Num_of_VirtualNodes);
+% tmp1=max(tmpt_J-t,0);
+% k1=find(tmp1==0,1,'last');
+% y=JF(k1);
 %------------------------------------------------------------------
 % global JF Tau Num_of_VitualNodes Theta
 % if t<Tau
