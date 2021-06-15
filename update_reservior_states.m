@@ -1,6 +1,6 @@
 function [y] = update_reservior_states(lag,tstep,y0,gamma,J,z,a,b,c)
-% 此处显示有关此函数的摘要
-% 此处显示详细说明
+% 姝ゅ鏄剧ず鏈夊叧姝ゅ嚱鏁扮殑鎽樿
+% 姝ゅ鏄剧ず璇︾粏璇存槑
 %Model of Mackey-Glass system
 %dx(t)=-b*x(t)+(a*(x(t-tau)))/(1+(x(t-tau))^c);
 %
@@ -12,8 +12,6 @@ function [y] = update_reservior_states(lag,tstep,y0,gamma,J,z,a,b,c)
 % a: feedback gain,
 % tau: time delay
 % J: time-multiplexed input stream J=M*u, M is a mask vector or matrix
-
-times=1;
 N=fix(lag/tstep);
 if isempty(gamma)
     gamma=0;
@@ -21,7 +19,7 @@ end
 if isempty(J)
     J=zeros(1,N);
 end
-yy=[y0 zeros(N,times)];
+yy=[y0 zeros(N,1)];
 t=2;
 for j=1:N 
     if j==1
@@ -46,7 +44,6 @@ z=varargin{8};
 a=varargin{9};
 b=varargin{10};
 c=varargin{11};
-%     x=x+h*FuncHandle(t,x,xh,gamma,J);
 k1=h*FuncHandle(t,x,xh,gamma,J,z,a,b,c);
 k2=h*FuncHandle(t+h/2,x+k1/2,xh,gamma,J,z,a,b,c);
 k3=h*FuncHandle(t+h/2,x+k2/2,xh,gamma,J,z,a,b,c);
