@@ -25,9 +25,14 @@ yy=[y0 zeros(N,times)];
 t=2;
 for j=1:N 
     if j==1
-        yy(j,t)=MG(@F,t,yy(N,t-1),yy(j,t-1),tstep,gamma,J(j),z(j),a,b,c);
-    else
-        yy(j,t)=MG(@F,t,yy(j-1,t),yy(j,t-1),tstep,gamma,J(j),z(j),a,b,c);
+        yh=pchip([1 2],yy(j:j+1,t-1),1:tstep:1+3*tstep);
+        yy(j,t)=MG(@F,t,yy(N,t-1),yh(1:4),tstep,gamma,J(j),z(j),a,b,c);
+    elseif j>1&&j<N
+        yh=pchip([1 2],yy(j:j+1,t-1),1:tstep:1+3*tstep);
+        yy(j,t)=MG(@F,t,yy(j-1,t),yh(1:4),tstep,gamma,J(j),z(j),a,b,c);
+    elseif j==N
+        yh=pchip([1 2],[yy(j,t-1) yy(1,t)],1:tstep:1+3*tstep);
+        yy(j,t)=MG(@F,t,yy(j-1,t),yh,tstep,gamma,J(j),z(j),a,b,c);
     end
 end
 % --------------------------------------
@@ -47,10 +52,10 @@ a=varargin{9};
 b=varargin{10};
 c=varargin{11};
 %     x=x+h*FuncHandle(t,x,xh,gamma,J);
-k1=h*FuncHandle(t,x,xh,gamma,J,z,a,b,c);
-k2=h*FuncHandle(t+h/2,x+k1/2,xh,gamma,J,z,a,b,c);
-k3=h*FuncHandle(t+h/2,x+k2/2,xh,gamma,J,z,a,b,c);
-k4=h*FuncHandle(t+h,x+k3,xh,gamma,J,z,a,b,c);
+k1=h*FuncHandle(t,x,xh(1),gamma,J,z,a,b,c);
+k2=h*FuncHandle(t+h/2,x+k1/2,xh(2),gamma,J,z,a,b,c);
+k3=h*FuncHandle(t+h/2,x+k2/2,xh(3),gamma,J,z,a,b,c);
+k4=h*FuncHandle(t+h,x+k3,xh(4),gamma,J,z,a,b,c);
 x=x+(k1+2*k2+2*k3+k4)/6;
 y=x;
 end
